@@ -1,7 +1,7 @@
-import { FlatListBasics } from "./components/FlatListBasics";
+import { SectionListBasics } from "./components/SectionListBasics";
 
 const App = () => {
-  return <FlatListBasics />;
+  return <SectionListBasics />;
 };
 
 export default App;

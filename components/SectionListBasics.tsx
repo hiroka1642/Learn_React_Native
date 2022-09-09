@@ -1,6 +1,10 @@
-import { SectionList, StyleSheet, Text, View } from "react-native";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { Button, SectionList, StyleSheet, Text, View } from "react-native";
+import { RootStackParamList } from "../App";
 
-export const SectionListBasics = () => {
+type Props = NativeStackScreenProps<RootStackParamList, "SectionListBasics">;
+
+export const SectionListBasics = ({ navigation }: Props) => {
   return (
     //ScrollViewの中にFlatListはおかない
     <View style={styles.container}>
@@ -27,6 +31,7 @@ export const SectionListBasics = () => {
         // item だけで値を受け取れる
         keyExtractor={(item) => `basicListEntry-${item}`}
       />
+      <Button title="Go back" onPress={() => navigation.goBack()} />
     </View>
   );
 };

@@ -1,6 +1,10 @@
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { Button, FlatList, StyleSheet, Text, View } from "react-native";
+import { RootStackParamList } from "../App";
 
-export const FlatListBasics = () => {
+type Props = NativeStackScreenProps<RootStackParamList, "FlatListBasics">;
+
+export const FlatListBasics = ({ navigation }: Props) => {
   return (
     //ScrollViewの中にFlatListはおかない
     <View style={styles.container}>
@@ -19,6 +23,7 @@ export const FlatListBasics = () => {
         ]}
         renderItem={({ item }) => <Text style={styles.item}>{item.key}</Text>}
       />
+      <Button title="Go back" onPress={() => navigation.goBack()} />
     </View>
   );
 };

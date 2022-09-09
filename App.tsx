@@ -33,7 +33,7 @@ export const HomeScreen = ({ navigation }: Props) => {
   );
 };
 
-export const App = () => {
+const App = () => {
   return (
     <NavigationContainer>
       <RootStack.Navigator initialRouteName="Home">
@@ -51,3 +51,5 @@ export const App = () => {
     </NavigationContainer>
   );
 };
+
+export default App;

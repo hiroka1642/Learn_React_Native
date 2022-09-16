@@ -1,11 +1,7 @@
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { FlatList, Image, StyleSheet, Text, View } from "react-native";
-import { RootStackParamList } from "../App";
-
-type Props = NativeStackScreenProps<RootStackParamList, "UserListScreen">;
 
 /** @package */
-export const UserListScreen = ({ navigation }: Props) => {
+export const UserListScreen = () => {
   return (
     //ScrollViewの中にFlatListはおかない
     <View style={styles.container}>

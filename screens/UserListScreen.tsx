@@ -1,53 +1,59 @@
+import { useCallback, useEffect, useState } from "react";
 import { FlatList, Image, StyleSheet, Text, View } from "react-native";
 
 /** @package */
 export const UserListScreen = () => {
+  const [userData, setUserData] =
+    useState<
+      { name: string; thumbnail: string; email: string; age: string }[]
+    >();
+
+  const callUserDataApi = useCallback(async () => {
+    const res = await fetch("https://randomuser.me/api/?results=10");
+    const users = await res.json();
+
+    if (!res.ok) {
+      throw new Error(`Network response was not OK :${res.statusText}`);
+    }
+
+    if (res.ok) {
+      const userData = users.results.map((data: any) => {
+        return {
+          name: data.name.first,
+          thumbnail: data.picture.thumbnail,
+          email: data.email,
+          age: data.dob.age,
+        };
+      });
+      setUserData(userData);
+    }
+  }, [setUserData]);
+
+  useEffect(() => {
+    callUserDataApi();
+  }, []);
+
+  if (userData === undefined) {
+    return (
+      <View>
+        <Text>ローディング中</Text>
+      </View>
+    );
+  }
+
+  if (userData === []) {
+    return (
+      <View>
+        <Text>データが見つかりませんでした</Text>
+      </View>
+    );
+  }
+
   return (
     //ScrollViewの中にFlatListはおかない
     <View style={styles.container}>
       <FlatList
-        data={[
-          {
-            name: "Devin",
-            thumbnail: "https://randomuser.me/api/portraits/thumb/men/75.jpg",
-          },
-          {
-            name: "Dan",
-            thumbnail: "https://randomuser.me/api/portraits/thumb/men/75.jpg",
-          },
-          {
-            name: "Dominic",
-            thumbnail: "https://randomuser.me/api/portraits/thumb/men/75.jpg",
-          },
-          {
-            name: "Jackson",
-            thumbnail: "https://randomuser.me/api/portraits/thumb/men/75.jpg",
-          },
-          {
-            name: "James",
-            thumbnail: "https://randomuser.me/api/portraits/thumb/men/75.jpg",
-          },
-          {
-            name: "Joel",
-            thumbnail: "https://randomuser.me/api/portraits/thumb/men/75.jpg",
-          },
-          {
-            name: "John",
-            thumbnail: "https://randomuser.me/api/portraits/thumb/men/75.jpg",
-          },
-          {
-            name: "Jillian",
-            thumbnail: "https://randomuser.me/api/portraits/thumb/men/75.jpg",
-          },
-          {
-            name: "Jimmy",
-            thumbnail: "https://randomuser.me/api/portraits/thumb/men/75.jpg",
-          },
-          {
-            name: "Julie",
-            thumbnail: "https://randomuser.me/api/portraits/thumb/men/75.jpg",
-          },
-        ]}
+        data={userData}
         renderItem={({ item }) => (
           <View
             style={{

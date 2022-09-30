@@ -1,8 +1,19 @@
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useCallback, useEffect, useState } from "react";
-import { FlatList, Image, StyleSheet, Text, View } from "react-native";
+import {
+  FlatList,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { RootStackParamList } from "../App";
+
+type Props = NativeStackScreenProps<RootStackParamList, "UserListScreen">;
 
 /** @package */
-export const UserListScreen = () => {
+export const UserListScreen = ({ navigation }: Props) => {
   const [userData, setUserData] =
     useState<
       { name: string; thumbnail: string; email: string; age: string }[]
@@ -49,6 +60,10 @@ export const UserListScreen = () => {
     );
   }
 
+  const onPressUserDetails = (userdata: any) => {
+    navigation.navigate("UserDetailsScreen", { userdata: userdata });
+  };
+
   return (
     //ScrollViewの中にFlatListはおかない
     <View style={styles.container}>
@@ -62,11 +77,16 @@ export const UserListScreen = () => {
               flexDirection: "row",
             }}
           >
-            <Image
-              source={{ uri: item.thumbnail }}
-              style={{ width: 40, height: 40 }}
-            />
-            <Text style={styles.item}>{item.name}</Text>
+            <TouchableOpacity
+              style={styles.item}
+              onPress={() => onPressUserDetails(item)}
+            >
+              <Image
+                source={{ uri: item.thumbnail }}
+                style={{ width: 40, height: 40 }}
+              />
+              <Text style={styles.text}>{item.name}</Text>
+            </TouchableOpacity>
           </View>
         )}
       />
@@ -80,8 +100,13 @@ const styles = StyleSheet.create({
     paddingTop: 22,
   },
   item: {
-    padding: 10,
-    fontSize: 18,
+    display: "flex",
+    flexDirection: "row",
     height: 44,
+    alignItems: "center",
+  },
+  text: {
+    fontSize: 20,
+    paddingLeft: 10,
   },
 });

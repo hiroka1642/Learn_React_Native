@@ -12,12 +12,16 @@ import { RootStackParamList } from "../App";
 
 type Props = NativeStackScreenProps<RootStackParamList, "UserListScreen">;
 
+export type UserData = {
+  name: string;
+  thumbnail: string;
+  email: string;
+  age: string;
+};
+
 /** @package */
 export const UserListScreen = ({ navigation }: Props) => {
-  const [userData, setUserData] =
-    useState<
-      { name: string; thumbnail: string; email: string; age: string }[]
-    >();
+  const [userData, setUserData] = useState<UserData[]>();
 
   const callUserDataApi = useCallback(async () => {
     const res = await fetch("https://randomuser.me/api/?results=10");

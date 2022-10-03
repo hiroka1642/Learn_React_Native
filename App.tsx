@@ -1,17 +1,12 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
-import { UserDetailsScreen, UserListScreen } from "./screens";
+import { UserData, UserDetailsScreen, UserListScreen } from "./screens";
 
 export type RootStackParamList = {
   UserListScreen: undefined;
   UserDetailsScreen: {
-    userdata: {
-      name: string | undefined;
-      thumbnail: string | undefined;
-      email: string | undefined;
-      age: string | undefined;
-    };
+    userdata: UserData | null;
   };
 };
 
@@ -30,12 +25,7 @@ const App = () => {
           name="UserDetailsScreen"
           component={UserDetailsScreen}
           initialParams={{
-            userdata: {
-              name: undefined,
-              thumbnail: undefined,
-              email: undefined,
-              age: undefined,
-            },
+            userdata: null,
           }}
           options={{ title: "UserDetails" }}
         />

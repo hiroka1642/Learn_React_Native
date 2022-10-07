@@ -6,7 +6,7 @@ import { UserData, UserDetailsScreen, UserListScreen } from "./screens";
 export type RootStackParamList = {
   UserListScreen: undefined;
   UserDetailsScreen: {
-    userdata: UserData | null;
+    userdata: UserData;
   };
 };
 
@@ -24,9 +24,6 @@ const App = () => {
         <RootStack.Screen
           name="UserDetailsScreen"
           component={UserDetailsScreen}
-          initialParams={{
-            userdata: null,
-          }}
           options={{ title: "UserDetails" }}
         />
       </RootStack.Navigator>

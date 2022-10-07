@@ -14,7 +14,7 @@ type Props = NativeStackScreenProps<RootStackParamList, "UserListScreen">;
 
 export type UserData = {
   name: string;
-  thumbnail: string;
+  thumbnailUrl: string;
   email: string;
   age: string;
 };
@@ -35,7 +35,7 @@ export const UserListScreen = ({ navigation }: Props) => {
       const userData = users.results.map((data: any) => {
         return {
           name: data.name.first,
-          thumbnail: data.picture.thumbnail,
+          thumbnailUrl: data.picture.thumbnail,
           email: data.email,
           age: data.dob.age,
         };
@@ -86,7 +86,7 @@ export const UserListScreen = ({ navigation }: Props) => {
               onPress={() => onPressUserDetails(item)}
             >
               <Image
-                source={{ uri: item.thumbnail }}
+                source={{ uri: item.thumbnailUrl }}
                 style={{ width: 40, height: 40 }}
               />
               <Text style={styles.text}>{item.name}</Text>

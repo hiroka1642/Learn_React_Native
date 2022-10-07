@@ -17,6 +17,7 @@ export type UserData = {
   thumbnailUrl: string;
   email: string;
   age: string;
+  pictureUrl: string;
 };
 
 /** @package */
@@ -38,6 +39,7 @@ export const UserListScreen = ({ navigation }: Props) => {
           thumbnailUrl: data.picture.thumbnail,
           email: data.email,
           age: data.dob.age,
+          pictureUrl: data.picture.large,
         };
       });
       setUserData(userData);

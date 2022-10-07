@@ -17,7 +17,7 @@ export const UserDetailsScreen = (props: Props) => {
   return (
     <View style={styles.container}>
       <Image
-        source={{ uri: props.route.params.userdata?.thumbnailUrl }}
+        source={{ uri: props.route.params.userdata?.pictureUrl }}
         style={{ width: 200, height: 200 }}
       />
       <View style={styles.userDetails}>

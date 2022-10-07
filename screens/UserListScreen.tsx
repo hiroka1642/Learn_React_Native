@@ -72,36 +72,30 @@ export const UserListScreen = ({ navigation }: Props) => {
 
   return (
     //ScrollViewの中にFlatListはおかない
-    <View style={styles.container}>
-      <FlatList
-        data={userData}
-        renderItem={({ item }) => (
-          <View
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              flexDirection: "row",
-            }}
-          >
-            <TouchableOpacity
-              style={styles.item}
-              onPress={() => onPressUserDetails(item)}
-            >
-              <Image
-                source={{ uri: item.thumbnailUrl }}
-                style={{ width: 40, height: 40 }}
-              />
-              <Text style={styles.text}>{item.name}</Text>
-            </TouchableOpacity>
-          </View>
-        )}
-      />
-    </View>
+    <FlatList
+      contentContainerStyle={styles.contentContainer}
+      data={userData}
+      renderItem={({ item }) => (
+        <View
+          style={{
+            display: "flex",
+            justifyContent: "flex-start",
+            flexDirection: "row",
+          }}
+        >
+          <Image
+            source={{ uri: item.thumbnail }}
+            style={{ width: 40, height: 40 }}
+          />
+          <Text style={styles.item}>{item.name}</Text>
+        </View>
+      )}
+    />
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  contentContainer: {
     flex: 1,
     paddingTop: 22,
   },

@@ -1,6 +1,13 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useCallback, useEffect, useState } from "react";
-import { FlatList, Image, StyleSheet, Text, View } from "react-native";
+import {
+  FlatList,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { RootStackParamList } from "../App";
 
 type Props = NativeStackScreenProps<RootStackParamList, "UserListScreen">;
@@ -76,11 +83,16 @@ export const UserListScreen = ({ navigation }: Props) => {
             flexDirection: "row",
           }}
         >
-          <Image
-            source={{ uri: item.thumbnailUrl }}
-            style={{ width: 40, height: 40 }}
-          />
-          <Text style={styles.item}>{item.name}</Text>
+          <TouchableOpacity
+            style={styles.item}
+            onPress={() => onPressUserDetails(item)}
+          >
+            <Image
+              source={{ uri: item.thumbnailUrl }}
+              style={{ width: 40, height: 40 }}
+            />
+            <Text style={styles.text}>{item.name}</Text>
+          </TouchableOpacity>
         </View>
       )}
     />

@@ -3,7 +3,6 @@ import { useCallback, useEffect, useState } from "react";
 import {
   FlatList,
   Image,
-  RefreshControl,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -82,9 +81,8 @@ export const UserListScreen = ({ navigation }: Props) => {
     //ScrollViewの中にFlatListはおかない
     <FlatList
       contentContainerStyle={styles.contentContainer}
-      refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={refresh} />
-      }
+      refreshing={refreshing}
+      onRefresh={refresh}
       data={userData}
       renderItem={({ item }) => (
         <View

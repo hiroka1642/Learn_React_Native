@@ -58,7 +58,7 @@ export const UserListScreen = ({ navigation }: Props) => {
     );
   }
 
-  if (userData === []) {
+  if (userData.length === 0) {
     return (
       <View>
         <Text>データが見つかりませんでした</Text>
@@ -66,8 +66,8 @@ export const UserListScreen = ({ navigation }: Props) => {
     );
   }
 
-  const onPressUserDetails = (userdata: any) => {
-    navigation.navigate("UserDetailsScreen", { userdata: userdata });
+  const onPressUserDetails = (data: any) => {
+    navigation.navigate("UserDetailsScreen", { userdata: data });
   };
 
   return (

@@ -27,15 +27,11 @@ export const UserDetailsScreen = (props: Props) => {
         </View>
         <View style={styles.userdata}>
           <Text style={styles.label}>email:</Text>
-          <Text style={styles.text}>
-            email:{props.route?.params?.userdata?.email}
-          </Text>
+          <Text style={styles.text}>{props.route.params.userdata?.email}</Text>
         </View>
         <View style={styles.userdata}>
           <Text style={styles.label}>age:</Text>
-          <Text style={styles.text}>
-            age:{props.route.params.userdata?.age}
-          </Text>
+          <Text style={styles.text}>{props.route.params.userdata?.age}</Text>
         </View>
       </View>
     </View>

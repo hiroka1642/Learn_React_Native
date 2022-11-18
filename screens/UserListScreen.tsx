@@ -1,12 +1,28 @@
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useCallback, useEffect, useState } from "react";
-import { FlatList, Image, StyleSheet, Text, View } from "react-native";
+import {
+  FlatList,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { RootStackParamList } from "../App";
+
+type Props = NativeStackScreenProps<RootStackParamList, "UserListScreen">;
+
+export type UserData = {
+  name: string;
+  thumbnailUrl: string;
+  email: string;
+  age: string;
+  pictureUrl: string;
+};
 
 /** @package */
-export const UserListScreen = () => {
-  const [userData, setUserData] =
-    useState<
-      { name: string; thumbnail: string; email: string; age: string }[]
-    >();
+export const UserListScreen = ({ navigation }: Props) => {
+  const [userData, setUserData] = useState<UserData[]>();
 
   const callUserDataApi = useCallback(async () => {
     const res = await fetch("https://randomuser.me/api/?results=10");
@@ -20,9 +36,10 @@ export const UserListScreen = () => {
       const userData = users.results.map((data: any) => {
         return {
           name: data.name.first,
-          thumbnail: data.picture.thumbnail,
+          thumbnailUrl: data.picture.thumbnail,
           email: data.email,
           age: data.dob.age,
+          pictureUrl: data.picture.large,
         };
       });
       setUserData(userData);
@@ -41,13 +58,17 @@ export const UserListScreen = () => {
     );
   }
 
-  if (userData === []) {
+  if (userData.length === 0) {
     return (
       <View>
         <Text>データが見つかりませんでした</Text>
       </View>
     );
   }
+
+  const onPressUserDetails = (data: any) => {
+    navigation.navigate("UserDetailsScreen", { userdata: data });
+  };
 
   return (
     //ScrollViewの中にFlatListはおかない
@@ -62,11 +83,16 @@ export const UserListScreen = () => {
             flexDirection: "row",
           }}
         >
-          <Image
-            source={{ uri: item.thumbnail }}
-            style={{ width: 40, height: 40 }}
-          />
-          <Text style={styles.item}>{item.name}</Text>
+          <TouchableOpacity
+            style={styles.item}
+            onPress={() => onPressUserDetails(item)}
+          >
+            <Image
+              source={{ uri: item.thumbnailUrl }}
+              style={{ width: 40, height: 40 }}
+            />
+            <Text style={styles.text}>{item.name}</Text>
+          </TouchableOpacity>
         </View>
       )}
     />
@@ -79,8 +105,13 @@ const styles = StyleSheet.create({
     paddingTop: 22,
   },
   item: {
-    padding: 10,
-    fontSize: 18,
+    display: "flex",
+    flexDirection: "row",
     height: 44,
+    alignItems: "center",
+  },
+  text: {
+    fontSize: 20,
+    paddingLeft: 10,
   },
 });

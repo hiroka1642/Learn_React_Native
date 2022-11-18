@@ -17,21 +17,21 @@ export const UserDetailsScreen = (props: Props) => {
   return (
     <View style={styles.container}>
       <Image
-        source={{ uri: props.route.params.userdata?.pictureUrl }}
+        source={{ uri: props.route.params.userData?.pictureUrl }}
         style={{ width: 200, height: 200 }}
       />
       <View style={styles.userDetails}>
         <View style={styles.userdata}>
           <Text style={styles.label}>name:</Text>
-          <Text style={styles.text}>{props.route.params.userdata?.name}</Text>
+          <Text style={styles.text}>{props.route.params.userData?.name}</Text>
         </View>
         <View style={styles.userdata}>
           <Text style={styles.label}>email:</Text>
-          <Text style={styles.text}>{props.route.params.userdata?.email}</Text>
+          <Text style={styles.text}>{props.route.params.userData?.email}</Text>
         </View>
         <View style={styles.userdata}>
           <Text style={styles.label}>age:</Text>
-          <Text style={styles.text}>{props.route.params.userdata?.age}</Text>
+          <Text style={styles.text}>{props.route.params.userData?.age}</Text>
         </View>
       </View>
     </View>

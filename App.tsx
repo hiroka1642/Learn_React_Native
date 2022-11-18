@@ -6,7 +6,7 @@ import { UserData, UserDetailsScreen, UserListScreen } from "./screens";
 export type RootStackParamList = {
   UserListScreen: undefined;
   UserDetailsScreen: {
-    userdata: UserData;
+    userData: UserData;
   };
 };
 

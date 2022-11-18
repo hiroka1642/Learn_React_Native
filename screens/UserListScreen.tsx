@@ -47,10 +47,12 @@ export const UserListScreen = ({ navigation }: Props) => {
     }
   }, [setUserData]);
 
-  const refresh = useCallback(async () => {
-    setRefreshing(true);
-    await callUserDataApi();
-    setRefreshing(false);
+  const refresh = useCallback(() => {
+    async () => {
+      setRefreshing(true);
+      await callUserDataApi();
+      setRefreshing(false);
+    };
   }, []);
 
   useEffect(() => {

@@ -23,6 +23,7 @@ export type UserData = {
 /** @package */
 export const UserListScreen = ({ navigation }: Props) => {
   const [userData, setUserData] = useState<UserData[]>();
+  const [refreshing, setRefreshing] = useState(false);
 
   const callUserDataApi = useCallback(async () => {
     const res = await fetch("https://randomuser.me/api/?results=10");
@@ -45,6 +46,14 @@ export const UserListScreen = ({ navigation }: Props) => {
       setUserData(userData);
     }
   }, [setUserData]);
+
+  const refresh = useCallback(() => {
+    async () => {
+      setRefreshing(true);
+      await callUserDataApi();
+      setRefreshing(false);
+    };
+  }, []);
 
   useEffect(() => {
     callUserDataApi();
@@ -74,6 +83,8 @@ export const UserListScreen = ({ navigation }: Props) => {
     //ScrollViewの中にFlatListはおかない
     <FlatList
       contentContainerStyle={styles.contentContainer}
+      refreshing={refreshing}
+      onRefresh={refresh}
       data={userData}
       renderItem={({ item }) => (
         <View

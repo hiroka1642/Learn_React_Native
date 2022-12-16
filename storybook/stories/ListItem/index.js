@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from "react-native";
 
-const ListItem = () => {
+export const ListItem = () => {
   return (
     <View style={styles.container}>
       <Text>リスト</Text>
@@ -16,5 +16,3 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 });
-
-export default ListItem;

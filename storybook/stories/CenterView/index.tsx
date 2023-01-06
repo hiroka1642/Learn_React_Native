@@ -1,7 +1,7 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import { StyleSheet, View } from "react-native";
 
-const CenterView = ({ children }: any) => {
+const CenterView = ({ children }: { children: ReactNode }) => {
   return <View style={styles.main}>{children}</View>;
 };
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { ListItem } from ".";
+import { ListItem as _ListItem } from ".";
 import CenterView from "../CenterView";
 
 export default {
@@ -7,8 +7,8 @@ export default {
   decorators: [(getStory) => <CenterView>{getStory()}</CenterView>],
 };
 
-export const _ListItem = () => <ListItem />;
+export const ListItem = () => <_ListItem />;
 
-_ListItem.story = {
+ListItem.story = {
   name: "ListItem",
 };

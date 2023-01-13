@@ -1,5 +1,5 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 import {
   FlatList,
   Image,
@@ -9,6 +9,7 @@ import {
   View,
 } from "react-native";
 import { RootStackParamList } from "../App";
+import { useUser } from "../hooks/useUser";
 
 type Props = NativeStackScreenProps<RootStackParamList, "UserListScreen">;
 
@@ -22,44 +23,17 @@ export type UserData = {
 
 /** @package */
 export const UserListScreen = ({ navigation }: Props) => {
-  const [userData, setUserData] = useState<UserData[]>();
   const [refreshing, setRefreshing] = useState(false);
 
-  const callUserDataApi = useCallback(async () => {
-    const res = await fetch("https://randomuser.me/api/?results=10");
-    const users = await res.json();
+  const { userData, isloading, error, refresh } = useUser();
 
-    if (!res.ok) {
-      throw new Error(`Network response was not OK :${res.statusText}`);
-    }
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await refresh();
+    setRefreshing(false);
+  };
 
-    if (res.ok) {
-      const userData = users.results.map((data: any) => {
-        return {
-          name: data.name.first,
-          thumbnailUrl: data.picture.thumbnail,
-          email: data.email,
-          age: data.dob.age,
-          pictureUrl: data.picture.large,
-        };
-      });
-      setUserData(userData);
-    }
-  }, [setUserData]);
-
-  const refresh = useCallback(() => {
-    async () => {
-      setRefreshing(true);
-      await callUserDataApi();
-      setRefreshing(false);
-    };
-  }, []);
-
-  useEffect(() => {
-    callUserDataApi();
-  }, []);
-
-  if (userData === undefined) {
+  if (isloading) {
     return (
       <View>
         <Text>ローディング中</Text>
@@ -75,8 +49,16 @@ export const UserListScreen = ({ navigation }: Props) => {
     );
   }
 
+  if (error) {
+    return (
+      <View>
+        <Text>エラーが発生しました</Text>
+      </View>
+    );
+  }
+
   const onPressUserDetails = (data: any) => {
-    navigation.navigate("UserDetailsScreen", { userdata: data });
+    navigation.navigate("UserDetailsScreen", { userData: data });
   };
 
   return (
@@ -84,7 +66,7 @@ export const UserListScreen = ({ navigation }: Props) => {
     <FlatList
       contentContainerStyle={styles.contentContainer}
       refreshing={refreshing}
-      onRefresh={refresh}
+      onRefresh={onRefresh}
       data={userData}
       renderItem={({ item }) => (
         <View
@@ -100,7 +82,7 @@ export const UserListScreen = ({ navigation }: Props) => {
           >
             <Image
               source={{ uri: item.thumbnailUrl }}
-              style={{ width: 40, height: 40 }}
+              style={{ width: 76, height: 76 }}
             />
             <Text style={styles.text}>{item.name}</Text>
           </TouchableOpacity>
@@ -118,7 +100,7 @@ const styles = StyleSheet.create({
   item: {
     display: "flex",
     flexDirection: "row",
-    height: 44,
+    height: 80,
     alignItems: "center",
   },
   text: {

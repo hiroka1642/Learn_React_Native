@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { useState } from "react";
 import {
+  ActivityIndicator,
   FlatList,
   Image,
   StyleSheet,
@@ -9,7 +9,7 @@ import {
   View,
 } from "react-native";
 import { RootStackParamList } from "../App";
-import { useUser } from "../hooks/useUser";
+import { useUserData } from "../hooks/useUser";
 
 type Props = NativeStackScreenProps<RootStackParamList, "UserListScreen">;
 
@@ -23,39 +23,8 @@ export type UserData = {
 
 /** @package */
 export const UserListScreen = ({ navigation }: Props) => {
-  const [refreshing, setRefreshing] = useState(false);
-
-  const { userData, isloading, error, refresh } = useUser();
-
-  const onRefresh = async () => {
-    setRefreshing(true);
-    await refresh();
-    setRefreshing(false);
-  };
-
-  if (isloading) {
-    return (
-      <View>
-        <Text>ローディング中</Text>
-      </View>
-    );
-  }
-
-  if (userData.length === 0) {
-    return (
-      <View>
-        <Text>データが見つかりませんでした</Text>
-      </View>
-    );
-  }
-
-  if (error) {
-    return (
-      <View>
-        <Text>エラーが発生しました</Text>
-      </View>
-    );
-  }
+  const { userData, isloading, error, refresh, reCallUserData, refreshing } =
+    useUserData();
 
   const onPressUserDetails = (data: any) => {
     navigation.navigate("UserDetailsScreen", { userData: data });
@@ -66,27 +35,49 @@ export const UserListScreen = ({ navigation }: Props) => {
     <FlatList
       contentContainerStyle={styles.contentContainer}
       refreshing={refreshing}
-      onRefresh={onRefresh}
+      onEndReached={() => reCallUserData()}
+      onRefresh={refresh}
+      ListFooterComponent={
+        isloading && refreshing === false ? (
+          <View>
+            <ActivityIndicator />
+          </View>
+        ) : null
+      }
       data={userData}
       renderItem={({ item }) => (
-        <View
-          style={{
-            display: "flex",
-            justifyContent: "flex-start",
-            flexDirection: "row",
-          }}
-        >
-          <TouchableOpacity
-            style={styles.item}
-            onPress={() => onPressUserDetails(item)}
+        <>
+          {!isloading && !refreshing && userData.length === 0 ? (
+            <View>
+              <Text>データが見つかりませんでした</Text>
+            </View>
+          ) : null}
+
+          {error ? (
+            <View>
+              <Text>エラーが発生しました</Text>
+            </View>
+          ) : null}
+
+          <View
+            style={{
+              display: "flex",
+              justifyContent: "flex-start",
+              flexDirection: "row",
+            }}
           >
-            <Image
-              source={{ uri: item.thumbnailUrl }}
-              style={{ width: 76, height: 76 }}
-            />
-            <Text style={styles.text}>{item.name}</Text>
-          </TouchableOpacity>
-        </View>
+            <TouchableOpacity
+              style={styles.item}
+              onPress={() => onPressUserDetails(item)}
+            >
+              <Image
+                source={{ uri: item.thumbnailUrl }}
+                style={{ width: 76, height: 76 }}
+              />
+              <Text style={styles.text}>{item.name}</Text>
+            </TouchableOpacity>
+          </View>
+        </>
       )}
     />
   );
@@ -94,7 +85,6 @@ export const UserListScreen = ({ navigation }: Props) => {
 
 const styles = StyleSheet.create({
   contentContainer: {
-    flex: 1,
     paddingTop: 22,
   },
   item: {
